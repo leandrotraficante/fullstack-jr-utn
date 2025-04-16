@@ -4,12 +4,14 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import PagesColors from './pages/PagesColor'; // importamos la pagina (con el componente reutlizable ya dentro de ella)
 import PagesFeed from './pages/PagesFeed';
+import Footer from './components/footer';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <PagesColors></PagesColors>
     <PagesFeed></PagesFeed>
+    <Footer></Footer>
   </React.StrictMode>
 );
 

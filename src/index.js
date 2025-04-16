@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import PagesColors from './pages/PagesColor'; // importamos la pagina (con el componente reutlizable ya dentro de ella)
+import PagesFeed from './pages/PagesFeed';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <PagesColors></PagesColors>
+    <PagesFeed></PagesFeed>
   </React.StrictMode>
 );
 

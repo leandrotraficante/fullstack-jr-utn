@@ -2,7 +2,7 @@ import React from 'react';
 
 function Page2(props) {
     return (
-        <div>
+        <div style={{backgroundColor:'pink', height: 200}}>
             PAGE 2
         </div>
     );

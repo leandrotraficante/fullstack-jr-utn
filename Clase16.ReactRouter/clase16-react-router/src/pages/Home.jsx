@@ -2,7 +2,7 @@ import React from 'react';
 
 function Home(props) {
     return (
-        <div>
+        <div style={{backgroundColor:'purple', height: 200}}>
             HOME
         </div>
     );

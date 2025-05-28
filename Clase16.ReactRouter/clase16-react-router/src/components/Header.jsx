@@ -8,6 +8,7 @@ function Header(props) {
             <Link style={{margin: 5, padding: 5, color:'white', backgroundColor:'grey'}} to="/">HOME</Link>
             <Link style={{margin: 5, padding: 5, color:'white', backgroundColor:'grey'}} to="Page1">PAGE 1</Link>
             <Link style={{margin: 5, padding: 5, color:'white', backgroundColor:'grey'}} to="Page2">PAGE 2</Link>
+            <Link style={{margin: 5, padding: 5, color:'white', backgroundColor:'grey'}} to="Page3">PAGE 3</Link>
         </div>
     );
 }

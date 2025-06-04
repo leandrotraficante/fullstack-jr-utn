@@ -1,5 +1,5 @@
 import React from 'react';
-import reactLogo from '../assets/react.svg'; // Asegurate de que el path esté correcto
+import reactLogo from '../assets/react.svg'; 
 
 function Header() {
   return (

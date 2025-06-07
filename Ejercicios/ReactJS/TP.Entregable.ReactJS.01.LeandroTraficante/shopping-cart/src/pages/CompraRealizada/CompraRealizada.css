@@ -1,0 +1,22 @@
+.success-page {
+  max-width: 600px;
+  margin: 6rem auto;
+  padding: 2rem 3rem;
+  background-color: #fffbb0;
+  border-radius: 10px;
+  border: 2px solid #28a745;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  color: #155724;
+  box-shadow: 0 0 15px rgba(40,167,69,0.4);
+}
+
+.success-page h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.success-page p {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}

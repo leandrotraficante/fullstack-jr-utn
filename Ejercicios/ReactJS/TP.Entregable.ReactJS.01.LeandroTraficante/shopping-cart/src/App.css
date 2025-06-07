@@ -1,0 +1,13 @@
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}

@@ -1,10 +1,18 @@
-import productsModel from '../models/product.model.js';
+import ProductsRepository from '../repository/product.repository.js';
 
-const createProduct = async (productData) => {
-    const product = new productsModel(productData);
-    return await product.save();
+const productsRepository = new ProductsRepository();
+
+const getAll = async () => {
+    const products = await productsRepository.getAll();
+    return products
+}
+
+const saveProduct = async (productData) => {
+    const product = await productsRepository.save(productData)
+    return product;
 };
 
 export default {
-    createProduct,
+    getAll,
+    saveProduct,
 };

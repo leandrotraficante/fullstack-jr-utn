@@ -1,7 +1,8 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import testRouter from './routes/test.routes.js';
-import productRouter from './routes/product.routes.js'
+import productRouter from './routes/product.routes.js';
+import userRouter from './routes/users.routes.js';
 
 const app = express();
 const PORT = 3000;
@@ -18,6 +19,7 @@ app.use(express.json()); // para poder recibir los body en JSON
 
 app.use('/api', testRouter)
 app.use('/api/products', productRouter)
+app.use('/api/users', userRouter)
 
 // app.get('/', (req, res) => { // patron de la ruta que queremos recibir; es la ruta raiz; 
 // // REQ & RES son las rquest de la solicitud HTTP y response es lo que verá el cliente
@@ -28,9 +30,9 @@ app.use('/api/products', productRouter)
 //     res.send('Probando ruta /test')
 // });
 
-app.get('/', (req, res) => {
-    res.send('API funcionando correctamente')
-});
+// app.get('/', (req, res) => {
+//     res.send('API funcionando correctamente')
+// });
 
 app.post('/test', (req, res) => {
     console.log(req.body)

@@ -10,4 +10,5 @@ export default class UserRepository {
         const result = await usersModel.create(user);
         return result;
     };
+
 }

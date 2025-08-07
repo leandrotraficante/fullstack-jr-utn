@@ -7,23 +7,23 @@ export default class ProductsRepository {
         return products;
     };
 
+    getById = async (productId) => {
+        const productById = await productsModel.findById(productId);
+        return productById
+    }
+
     save = async (product) => {
         const result = await productsModel.create(product);
         return result;
     };
 
-    // update = async (id, product) => {
-    //     const result = await productsModel.updateOne({ _id: id }, product);
-    //     return result;
-    // };
-
-    delete = async (id) => {
-        const result = await productsModel.deleteOne({ _id: id });
-        return result;
+    updateById = async (productId, productData) => {
+        const productToUpdate = await productsModel.findByIdAndUpdate(productId, productData, { new: true });
+        return productToUpdate;
     };
 
-    // getById = async (id) => {
-    //     const result = await productsModel.findById(id).lean();
-    //     return result;
-    // };
-}
+    deleteById = async (productId) => {
+        const productToDelete = await productsModel.findByIdAndDelete(productId);
+        return productToDelete;
+    }
+;}

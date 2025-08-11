@@ -19,11 +19,17 @@ export default class ProductsRepository {
 
     updateById = async (productId, productData) => {
         const productToUpdate = await productsModel.findByIdAndUpdate(productId, productData, { new: true });
+        if (!productToUpdate) {
+            throw new Error('Producto no encontrado');
+        }
         return productToUpdate;
     };
 
     deleteById = async (productId) => {
         const productToDelete = await productsModel.findByIdAndDelete(productId);
+        if (!productToDelete) {
+            throw new Error('Producto no encontrado');
+        }
         return productToDelete;
     }
-;}
+}

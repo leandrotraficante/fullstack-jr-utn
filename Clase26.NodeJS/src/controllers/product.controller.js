@@ -1,8 +1,9 @@
 import productsService from '../services/products.service.js'
 
 const createProduct = async (req, res) => {
+    const productData = req.body;
     try {
-        const product = await productsService.saveProduct(req.body);
+        const product = await productsService.saveProduct(productData);
         res.status(201).send(product)
     } catch (error) {
         res.status(500).send({ error: error.message })

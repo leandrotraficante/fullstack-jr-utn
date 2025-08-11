@@ -1,13 +1,16 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import testRouter from './routes/test.routes.js';
 import productRouter from './routes/product.routes.js';
 import userRouter from './routes/users.routes.js';
+import catalogRouter from './routes/catalog.routes.js';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
 
 const app = express();
-const PORT = 3000;
+const PORT = 8080; // iria en variable de entorno .env
 
-mongoose.connect('mongodb://localhost:27017/catalogo-db', {})
+// iria en variable de entorno .env
+mongoose.connect('mongodb+srv://leandrotraficante:krtKsIAIqJJVFfPO@cluster0.spjsbdg.mongodb.net/FullStackJRUTN_Clase26_API_Catalog?retryWrites=true&w=majority&appName=Cluster0', {})
 
 //Ejemlo de middleware
 app.use((req, res, next) => {
@@ -17,27 +20,32 @@ app.use((req, res, next) => {
 
 app.use(express.json()); // para poder recibir los body en JSON 
 
-app.use('/api', testRouter)
+//Configuracion inicial de documentación swagger:
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1', 
+        info: {
+            title: 'API de Catalogos de Productos',
+            description: 'API pensada para e-commerce basico'
+        },
+        servers: [
+            {
+                url: 'http://localhost:8080',
+                description: 'Servidor de desarrollo'
+            }
+        ]
+    },
+    apis: ['./src/routes/*.js', './docs/**/*.yaml'] // Incluye tanto rutas JS como archivos YAML
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+
+app.use('/api/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+
 app.use('/api/products', productRouter)
 app.use('/api/users', userRouter)
+app.use('/api/catalog', catalogRouter)
 
-// app.get('/', (req, res) => { // patron de la ruta que queremos recibir; es la ruta raiz; 
-// // REQ & RES son las rquest de la solicitud HTTP y response es lo que verá el cliente
-//     res.send('Hola desde Express!')
-// });
-
-// app.get('/test', (req, res) => {
-//     res.send('Probando ruta /test')
-// });
-
-// app.get('/', (req, res) => {
-//     res.send('API funcionando correctamente')
-// });
-
-app.post('/test', (req, res) => {
-    console.log(req.body)
-    res.send(req.body.name)
-});
 
 app.listen(PORT, () => { // el metodo listen recibe el puerto donde el servidor debe comunicarse con el exterior
     console.log(`Servidor iniciado en puerto: ${PORT}`)

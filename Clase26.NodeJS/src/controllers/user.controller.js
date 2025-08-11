@@ -19,7 +19,43 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const getUserById = async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const userById = await userService.getById(userId);
+        res.status(200).send(userById)
+    } catch (error) {
+        res.status(500).send({ error: error.message })
+    }
+};
+
+const updateUserById = async (req, res) => {
+    const userId = req.params.id;
+    const userData = req.body;
+    try {
+        const updatedUser = await userService.updateUser(userId, userData);
+        console.log(updatedUser)
+        res.status(200).send(updatedUser)
+    } catch (error) {
+        res.status(500).send({ error: error.message })
+    }
+};
+
+const deleteUserById = async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const deletedUser = await userService.deleteUserById(userId);
+        console.log(deletedUser)
+        res.status(200).send(deletedUser)
+    } catch (error) {
+        res.status(500).send({ error: error.message })
+    }
+};
+
 export {
     createUser,
-    getAllUsers
+    getAllUsers,
+    getUserById,
+    updateUserById,
+    deleteUserById
 };

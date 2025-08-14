@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import productRouter from './routes/product.routes.js';
 import userRouter from './routes/users.routes.js';
 import catalogRouter from './routes/catalog.routes.js';
+import authRouter from './routes/auth.routes.js';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 
@@ -11,12 +12,6 @@ const PORT = 8080; // iria en variable de entorno .env
 
 // iria en variable de entorno .env
 mongoose.connect('mongodb+srv://leandrotraficante:krtKsIAIqJJVFfPO@cluster0.spjsbdg.mongodb.net/FullStackJRUTN_Clase26_API_Catalog?retryWrites=true&w=majority&appName=Cluster0', {})
-
-//Ejemlo de middleware
-app.use((req, res, next) => {
-    console.log(`Llega una petición a ${req.method} a ${req.url}`);
-    next(); // sigue al siguiente middleware o ruta
-});
 
 app.use(express.json()); // para poder recibir los body en JSON 
 
@@ -42,11 +37,12 @@ const specs = swaggerJSDoc(swaggerOptions);
 
 app.use('/api/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
-app.use('/api/products', productRouter)
-app.use('/api/users', userRouter)
-app.use('/api/catalog', catalogRouter)
+app.use('/api/products', productRouter);
+app.use('/api/users', userRouter);
+app.use('/api/catalog', catalogRouter);
+app.use('/auth', authRouter);
 
 
 app.listen(PORT, () => { // el metodo listen recibe el puerto donde el servidor debe comunicarse con el exterior
     console.log(`Servidor iniciado en puerto: ${PORT}`)
-});
+}); 

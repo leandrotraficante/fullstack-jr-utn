@@ -1,12 +1,13 @@
 import express from 'express';
 import { createProduct, getAllProducts, getProductById, updateProductById, deleteProductById } from '../controllers/product.controller.js'
+import authMiddleware from '../middleware/auth.token.js';
 
 const productRouter = express.Router();
 
-productRouter.post('/', createProduct);
 productRouter.get('/', getAllProducts);
-productRouter.get('/:id', getProductById);
-productRouter.put('/:id', updateProductById);
-productRouter.delete('/:id', deleteProductById);
+productRouter.post('/', authMiddleware,createProduct);
+productRouter.get('/:id', authMiddleware, getProductById);
+productRouter.put('/:id', authMiddleware, updateProductById);
+productRouter.delete('/:id', authMiddleware, deleteProductById);
 
 export default productRouter;

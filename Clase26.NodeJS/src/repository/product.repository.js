@@ -2,8 +2,8 @@ import productsModel from '../models/product.model.js'
 
 export default class ProductsRepository {
 
-    getAll = async () => {
-        const products = await productsModel.find().lean();//metodo para transforamr de BSON a POJO
+    getAll = async (query = {}) => {
+        const products = await productsModel.find(query).lean();//metodo para transforamr de BSON a POJO
         return products;
     };
 

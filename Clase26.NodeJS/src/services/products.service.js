@@ -2,9 +2,19 @@ import ProductsRepository from '../repository/product.repository.js';
 
 const productsRepository = new ProductsRepository();
 
-const getAll = async () => {
-    const products = await productsRepository.getAll();
-    return products
+const getAll = async (searchTerm = '') => {
+    let query = {};
+    
+    // Búsqueda blanda por nombre O descripción
+    if (searchTerm) {
+        query.$or = [
+            { name: { $regex: searchTerm, $options: 'i' } },
+            { description: { $regex: searchTerm, $options: 'i' } }
+        ];
+    }
+    
+    const products = await productsRepository.getAll(query);
+    return products;
 };
 
 const getById = async (productId) => {

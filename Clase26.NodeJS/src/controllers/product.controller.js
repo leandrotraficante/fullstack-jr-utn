@@ -12,11 +12,11 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
-        const products = await productsService.getAll();
-        console.log(products)
-        res.status(200).send(products)
+        const searchTerm = req.query.search || ''; // query string: ?search=laptop
+        const products = await productsService.getAll(searchTerm);
+        res.status(200).send(products);
     } catch (error) {
-        res.status(500).send({ error: error.message })
+        res.status(500).send({ error: error.message });
     }
 };
 
@@ -36,7 +36,6 @@ const updateProductById = async (req, res) => {
     const productData = req.body;
     try {
         const updatedProduct = await productsService.updateProduct(productId, productData);
-        console.log(updatedProduct)
         res.status(200).send(updatedProduct)
     } catch (error) {
         res.status(500).send({ error: error.message })
@@ -47,7 +46,6 @@ const deleteProductById = async (req, res) => {
     const productId = req.params.id;
     try {
         const deletedProduct = await productsService.deleteProductById(productId);
-        console.log(deletedProduct)
         res.status(200).send(deletedProduct)
     } catch (error) {
         res.status(500).send({ error: error.message })

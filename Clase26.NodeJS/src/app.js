@@ -11,7 +11,7 @@ const app = express();
 const PORT = 8080; // iria en variable de entorno .env
 
 // iria en variable de entorno .env
-mongoose.connect('mongodb+srv://leandrotraficante:krtKsIAIqJJVFfPO@cluster0.spjsbdg.mongodb.net/FullStackJRUTN_Clase26_API_Catalog?retryWrites=true&w=majority&appName=Cluster0', {})
+mongoose.connect('mongodb+srv://leandrotraficante:Ad79M97L9f5G9z09@cluster0.spjsbdg.mongodb.net/FullStackJRUTN_Clase26_API_Catalog?retryWrites=true&w=majority&appName=Cluster0', {})
 
 app.use(express.json()); // para poder recibir los body en JSON 
 
@@ -34,6 +34,8 @@ const swaggerOptions = {
 };
 
 const specs = swaggerJSDoc(swaggerOptions);
+
+app.get('/', (req, res) => res.send('API OK'));
 
 app.use('/api/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 

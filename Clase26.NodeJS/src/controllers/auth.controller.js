@@ -22,7 +22,7 @@ const loginUser = async (req, res) => {
         const token = await authService.loginUser(email, password);
         
         if (!token) {
-            return res.status(200).send({ error: 'Invalid credentials' });
+            return res.status(401).send({ error: 'Invalid credentials' });
         }
         
         res.status(200).send({ 

@@ -17,8 +17,23 @@ function Banner() {
 
 
     return (
-        <div style={{ backgroundColor: backgroundColor, padding: '20px', textAlign: 'center' }}>
-            <h1 style={{ color: 'white' }}>Tecnología y eficiencia a su alcance</h1>
+        <div style={{ 
+            backgroundColor: backgroundColor, 
+            padding: '10px 20px', 
+            textAlign: 'center',
+            height: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        }}>
+            <h2 style={{ 
+                color: 'white', 
+                margin: 0,
+                fontSize: '16px',
+                fontWeight: 'normal'
+            }}>
+                Tecnología y eficiencia a su alcance
+            </h2>
         </div>
     );
 }

@@ -21,7 +21,7 @@ const Convert = () => {
                 color: '#404040', 
                 marginBottom: 30,
                 fontSize: 28
-            }}>Convert</h2>
+            }}>Conversor</h2>
             <div>
                 <input 
                 type="text"

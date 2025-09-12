@@ -9,7 +9,7 @@ function Footer() {
             alignItems: 'center',
             padding: 25,
             fontStyle:"italic"}}>
-            <p style={{ color: 'white' }}>&copy; Leandro Traficante - All rights reserved 2025</p>
+            <p style={{ color: 'white' }}>&copy; Leandro Traficante - Todos los derechos reservados 2025</p>
             <p style={{ color: 'white' }}>leandrotraficante@gmail.com</p>
         </div>
     );

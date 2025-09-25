@@ -26,7 +26,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({ origin: ORIGIN, credentials: true }));
 
-app.get('/', (req, res) => res.send('API OK'));
+app.get('/', (req, res) => res.json({ 
+    success: true, 
+    message: 'API OK' 
+}));
 
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);

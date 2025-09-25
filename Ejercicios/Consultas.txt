@@ -1,0 +1,13 @@
+Hola!
+Me quedaron algunas consultas respecto al TP final:
+
+- Servicio y endpoints de usuarios: Entiendo que el login quedó supeditado solo al ADMIN (aunque no tengamos diferenciación de roles), pero todo lo relacionado a users en el backend quedó sin usar en el front. Sé que lo ideal sería crear una distinción de usuarios y que las rutas sean accesibles según el rol del que se logea.
+- Tampoco se usa la funcionalidad del register ya que no hay esa opción en el proyecto actual.
+- CART: entiendo que en verdad esta funcionalidad iría en el backend? y que previo a finalizar la compra o en algún momento del proceso sea necesario logearse. También para poder crear endpoints de ordenes de compra y para que se modifique el stock en BDD una vez que se realice la compra.
+- Sistema de email: acá lo aplicamos en el front directamente, iría en el back? También para que se puedan enviar emails por intento de logeos, recuperar pass, compra finalizada, etc. 
+
+No entendí si todo esto era necesario agregarlo a nuestro proyecto o si a nivel MVP lo que presentamos esta ok así. 
+
+Todo feedback y/o devolución es bienvenida :) 
+
+Gracias!! 

@@ -12,18 +12,31 @@ const createCatalog = async (req, res) => {
     
     try {
         const catalog = await catalogService.saveCatalog(catalogData);
-        res.status(201).json(catalog)
+        res.status(201).json({
+            success: true,
+            data: catalog,
+            message: 'Categoría creada exitosamente'
+        })
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        })
     }
 };
 
 const getAllCatalogs = async (req, res) => {
     try {
         const catalogs = await catalogService.getAll();
-        res.status(200).json(catalogs)
+        res.status(200).json({
+            success: true,
+            data: catalogs
+        })
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        })
     }
 };
 
@@ -31,10 +44,15 @@ const getCatalogById = async (req, res) => {
     const catalogId = req.params.id;
     try {
         const catalogById = await catalogService.getById(catalogId);
-        res.status(200).json(catalogById)
+        res.status(200).json({
+            success: true,
+            data: catalogById
+        })
     } catch (error) {
-        res.status(500).json({ error: error.message })
-
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        })
     }
 };
 
@@ -48,9 +66,16 @@ const updateCatalogById = async (req, res) => {
     
     try {
         const updatedCatalog = await catalogService.updateCatalog(catalogId, catalogData);
-        res.status(200).json(updatedCatalog)
+        res.status(200).json({
+            success: true,
+            data: updatedCatalog,
+            message: 'Categoría actualizada exitosamente'
+        })
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        })
     }
 };
 
@@ -58,9 +83,16 @@ const deleteCatalogById = async (req, res) => {
     const catalogId = req.params.id;
     try {
         const deletedCatalog = await catalogService.deleteCatalogById(catalogId);
-        res.status(200).json(deletedCatalog)
+        res.status(200).json({
+            success: true,
+            data: deletedCatalog,
+            message: 'Categoría eliminada exitosamente'
+        })
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        })
     }
 };
 
@@ -68,9 +100,16 @@ const deactivateCatalog = async (req, res) => {
     const catalogId = req.params.id;
     try {
         const deactivatedCatalog = await catalogService.updateCatalog(catalogId, { isActive: false });
-        res.status(200).json(deactivatedCatalog)
+        res.status(200).json({
+            success: true,
+            data: deactivatedCatalog,
+            message: 'Categoría desactivada exitosamente'
+        })
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        })
     }
 };
 

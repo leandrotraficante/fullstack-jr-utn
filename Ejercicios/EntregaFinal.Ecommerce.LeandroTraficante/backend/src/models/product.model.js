@@ -23,18 +23,13 @@ const productSchema = new mongoose.Schema({
     },
     description: {
         type: String,
+        required: true,
         trim: true,
         maxlength: [500, 'La descripción no puede exceder 500 caracteres']
     },
     image: {
         type: String,
-        trim: true,
-        validate: {
-            validator: function (v) {
-                return !v || /^https?:\/\/\S+$/i.test(v);
-            },
-            message: 'La imagen debe ser una URL válida (http/https)'
-        }
+        trim: true
     },
     price: {
         type: Number,

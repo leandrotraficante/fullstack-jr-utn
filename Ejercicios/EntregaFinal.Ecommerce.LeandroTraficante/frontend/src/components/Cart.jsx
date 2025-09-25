@@ -1,11 +1,14 @@
-import React from 'react';
-import { Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Snackbar, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext.js';
 
 function Cart() {
     const { cart, addToCart, deleteProdFromCart, removeItem, clearCart, finalizePurchase } = useCart();
     const navigate = useNavigate();
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
     const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
     const totalPrice = cart.reduce((acc, item) => acc + (item.product.price || 0) * item.quantity, 0);
@@ -17,6 +20,10 @@ function Cart() {
             </div>
         );
     }
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
 
     return (
         <div style={{ padding: 16 }}>
@@ -55,10 +62,17 @@ function Cart() {
                         onClick={async () => {
                             try {
                                 await finalizePurchase();
-                                navigate('/purchase-success');
+                                setSnackbarMessage('¡Compra realizada con éxito!');
+                                setSnackbarSeverity('success');
+                                setSnackbarOpen(true);
+                                setTimeout(() => {
+                                    navigate('/purchase-success');
+                                }, 1500);
                             } catch (err) {
                                 console.error('Error finalizando compra', err);
-                                alert('No se pudo finalizar la compra. Intenta nuevamente.');
+                                setSnackbarMessage('No se pudo finalizar la compra. Intenta nuevamente.');
+                                setSnackbarSeverity('error');
+                                setSnackbarOpen(true);
                             }
                         }}
                     >
@@ -66,6 +80,21 @@ function Cart() {
                     </Button>
                 </div>
             </div>
+            
+            <Snackbar 
+                open={snackbarOpen} 
+                autoHideDuration={5000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert 
+                    onClose={handleSnackbarClose} 
+                    severity={snackbarSeverity} 
+                    sx={{ width: '100%' }}
+                >
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

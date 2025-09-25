@@ -25,9 +25,16 @@ const createProduct = async (req, res) => {
     
     try {
         const product = await productsService.saveProduct(productData);
-        res.status(201).json(product)
+        res.status(201).json({
+            success: true,
+            data: product,
+            message: 'Producto creado exitosamente'
+        })
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        })
     }
 };
 
@@ -38,9 +45,15 @@ const getAllProducts = async (req, res) => {
         const limit = parseInt(req.query.limit) || 10;
         const categoryId = req.query.category || '';
         const result = await productsService.getAll(searchTerm, page, limit, categoryId);
-        res.status(200).json(result);
+        res.status(200).json({
+            success: true,
+            data: result
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        });
     }
 };
 
@@ -48,10 +61,15 @@ const getProductById = async (req, res) => {
     const productId = req.params.id;
     try {
         const productById = await productsService.getById(productId);
-        res.status(200).json(productById)
+        res.status(200).json({
+            success: true,
+            data: productById
+        })
     } catch (error) {
-        res.status(500).json({ error: error.message })
-
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        })
     }
 };
 
@@ -72,9 +90,16 @@ const updateProductById = async (req, res) => {
     
     try {
         const updatedProduct = await productsService.updateProduct(productId, productData);
-        res.status(200).json(updatedProduct)
+        res.status(200).json({
+            success: true,
+            data: updatedProduct,
+            message: 'Producto actualizado exitosamente'
+        })
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        })
     }
 };
 
@@ -82,9 +107,16 @@ const deleteProductById = async (req, res) => {
     const productId = req.params.id;
     try {
         const deletedProduct = await productsService.deleteProductById(productId);
-        res.status(200).json(deletedProduct)
+        res.status(200).json({
+            success: true,
+            data: deletedProduct,
+            message: 'Producto eliminado exitosamente'
+        })
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        })
     }
 };
 

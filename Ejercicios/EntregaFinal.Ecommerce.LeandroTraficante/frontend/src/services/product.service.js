@@ -7,27 +7,27 @@ const productService = {
             url += `&category=${categoryId}`;
         }
         const response = await api.get(url);
-        return response.data;
+        return response.data.success ? response.data.data : response.data;
     },
 
     async getById(id) {
         const response = await api.get(`/api/products/${id}`);
-        return response.data;
+        return response.data.success ? response.data.data : response.data;
     },
 
     async create(productData) {
         const response = await api.post('/api/products', productData);
-        return response.data;
+        return response.data.success ? response.data.data : response.data;
     },
 
     async update(id, productData) {
         const response = await api.put(`/api/products/${id}`, productData);
-        return response.data;
+        return response.data.success ? response.data.data : response.data;
     },
 
     async delete(id) {
         const response = await api.delete(`/api/products/${id}`);
-        return response.data;
+        return response.data.success ? response.data.data : response.data;
     }
 };
 

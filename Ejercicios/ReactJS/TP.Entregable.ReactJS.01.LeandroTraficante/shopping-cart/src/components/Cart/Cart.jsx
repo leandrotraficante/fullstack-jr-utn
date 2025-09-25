@@ -1,6 +1,6 @@
 import React from 'react';
 import './cart.css';
-import Button from '../Button/Button'; // Asumiendo que tienes este componente
+import Button from '../Button/Button';
 
 function Cart({ cartItems, onRemove }) {
   return (

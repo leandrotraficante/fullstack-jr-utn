@@ -1,0 +1,1170 @@
+================================================================================
+                    DOCUMENTACIÓN TÉCNICA FRONTEND - TP REACT
+================================================================================
+
+PROYECTO: Portfolio Personal con React, Node.js y MongoDB
+AUTOR: Leandro Traficante
+FECHA: 2025
+TECNOLOGÍAS: React 19, Vite, Material-UI, React Router, Axios
+
+================================================================================
+                                ÍNDICE
+================================================================================
+
+1. ARQUITECTURA GENERAL DEL FRONTEND
+2. ESTRUCTURA DE CARPETAS Y ORGANIZACIÓN
+3. ANÁLISIS DETALLADO POR ARCHIVO
+4. DECISIONES DE ARQUITECTURA
+5. PATRONES DE DISEÑO IMPLEMENTADOS
+6. CONSIDERACIONES DE ESCALABILIDAD Y MANTENIBILIDAD
+
+================================================================================
+                        1. ARQUITECTURA GENERAL
+================================================================================
+
+DECISIÓN: Separación clara entre componentes, páginas y servicios
+RAZÓN: 
+- Separación de responsabilidades: cada capa tiene una función específica
+- Mantenibilidad: cambios en lógica de negocio no afectan la UI
+- Reutilización: componentes pueden ser reutilizados en diferentes páginas
+- Testing: cada capa puede ser testeada independientemente
+- Escalabilidad: facilita la adición de nuevas funcionalidades
+
+ESTRUCTURA ELEGIDA:
+- /components: Componentes reutilizables de UI
+- /pages: Páginas que representan rutas específicas
+- /services: Lógica de comunicación con APIs
+- /assets: Recursos estáticos (imágenes, etc.)
+
+================================================================================
+                        2. ESTRUCTURA DE CARPETAS
+================================================================================
+
+DECISIÓN: Organización jerárquica por funcionalidad
+RAZÓN:
+- Claridad: fácil localización de archivos
+- Convenciones: sigue estándares de la industria
+- Colaboración: otros desarrolladores entienden la estructura
+- Herramientas: IDEs y bundlers optimizan esta estructura
+
+================================================================================
+                        3. ANÁLISIS DETALLADO POR ARCHIVO
+================================================================================
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: main.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: Usar createRoot en lugar de ReactDOM.render
+RAZÓN:
+- React 18+: createRoot es la API moderna recomendada
+- Concurrent Features: permite usar características concurrentes
+- Performance: mejor rendimiento y control de actualizaciones
+- Future-proof: preparado para futuras versiones de React
+
+DECISIÓN: BrowserRouter como wrapper principal
+RAZÓN:
+- Client-side routing: navegación sin recarga de página
+- History API: usa la API nativa del navegador
+- SEO: mejor para aplicaciones SPA
+- UX: navegación más fluida
+
+DECISIÓN: Estructura de renderizado
+RAZÓN:
+- Separación clara: Router envuelve toda la aplicación
+- Reutilización: App puede ser usado en diferentes contextos
+- Testing: fácil de testear con diferentes routers
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: App.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: ThemeProvider como wrapper principal
+RAZÓN:
+- Material-UI: proporciona tema consistente a toda la app
+- Context API: permite acceso al tema desde cualquier componente
+- Customización: tema personalizado se aplica globalmente
+- Performance: evita re-renders innecesarios
+
+DECISIÓN: CssBaseline
+RAZÓN:
+- Normalización: estilos base consistentes entre navegadores
+- Material-UI: elimina diferencias de estilos por defecto
+- Cross-browser: compatibilidad garantizada
+- Clean slate: punto de partida limpio para estilos
+
+DECISIÓN: Container con maxWidth="lg"
+RAZÓN:
+- Responsive: se adapta a diferentes tamaños de pantalla
+- UX: contenido no se extiende demasiado en pantallas grandes
+- Legibilidad: ancho óptimo para lectura
+- Material-UI: breakpoint 'lg' es estándar (1200px)
+
+DECISIÓN: Box en lugar de div
+RAZÓN:
+- Material-UI: componente nativo del sistema de diseño
+- sx prop: API consistente para estilos
+- Performance: optimizado por la librería
+- TypeScript: mejor tipado y autocompletado
+
+DECISIÓN: Estructura de rutas
+RAZÓN:
+- React Router: navegación declarativa
+- Lazy loading: cada página se carga cuando es necesaria
+- SEO: URLs amigables y semánticas
+- UX: navegación intuitiva
+
+DECISIÓN: Ruta catch-all (*) para 404
+RAZÓN:
+- UX: página de error personalizada
+- SEO: evita errores 404 del servidor
+- Branding: mantiene la identidad visual
+- Debugging: ayuda a identificar rutas incorrectas
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: theme.js
+--------------------------------------------------------------------------------
+
+DECISIÓN: Tema personalizado separado
+RAZÓN:
+- Mantenibilidad: cambios centralizados
+- Consistencia: colores y tipografías unificadas
+- Branding: identidad visual coherente
+- Escalabilidad: fácil agregar nuevas variantes
+
+DECISIÓN: createTheme de Material-UI
+RAZÓN:
+- Sistema completo: colores, tipografías, espaciados
+- TypeScript: tipado fuerte
+- Performance: optimizado
+- Extensibilidad: fácil personalización
+
+DECISIÓN: Paleta de colores específica
+RAZÓN:
+- Accesibilidad: contraste adecuado
+- Profesional: colores corporativos
+- Material Design: sigue las guías de Google
+- Consistencia: se aplica en toda la aplicación
+
+DECISIÓN: Typography con fontFamily específica
+RAZÓN:
+- Legibilidad: Roboto es optimizada para pantallas
+- Fallbacks: Arial y sans-serif como respaldo
+- Performance: fuente web optimizada
+- Branding: identidad visual consistente
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: services/api.js
+--------------------------------------------------------------------------------
+
+DECISIÓN: Instancia de Axios centralizada
+RAZÓN:
+- DRY: evita duplicación de configuración
+- Mantenibilidad: cambios centralizados
+- Interceptors: fácil agregar lógica global
+- Performance: reutilización de conexiones
+
+DECISIÓN: baseURL configurada
+RAZÓN:
+- Environment: fácil cambio entre entornos
+- DRY: no repetir URL en cada request
+- Mantenibilidad: un solo lugar para cambiar
+- Escalabilidad: fácil agregar múltiples APIs
+
+DECISIÓN: Headers por defecto
+RAZÓN:
+- Content-Type: especifica formato de datos
+- Consistencia: todos los requests usan JSON
+- Backend: el servidor espera este formato
+- Estándar: práctica común en APIs REST
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: services/skills.service.js
+--------------------------------------------------------------------------------
+
+DECISIÓN: Objeto con métodos CRUD
+RAZÓN:
+- API clara: métodos descriptivos
+- Reutilización: fácil de usar en componentes
+- Mantenibilidad: cambios centralizados
+- Testing: fácil de mockear
+
+DECISIÓN: Arrow functions
+RAZÓN:
+- Conciso: sintaxis más limpia
+- Lexical this: no necesita bind
+- Moderno: estándar ES6+
+- Consistencia: mismo estilo en todo el proyecto
+
+DECISIÓN: Template literals para URLs
+RAZÓN:
+- Dinámico: fácil interpolación de variables
+- Legible: más claro que concatenación
+- Moderno: sintaxis ES6+
+- Mantenible: fácil de modificar
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: services/projects.service.js
+--------------------------------------------------------------------------------
+
+DECISIÓN: Misma estructura que skills.service.js
+RAZÓN:
+- Consistencia: patrón uniforme
+- Mantenibilidad: fácil de entender
+- Escalabilidad: fácil agregar más servicios
+- DRY: evita duplicación de lógica
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: components/Header.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: AppBar de Material-UI
+RAZÓN:
+- Semántica: elemento de navegación apropiado
+- Accesibilidad: roles ARIA incluidos
+- Responsive: se adapta automáticamente
+- Consistencia: sigue Material Design
+
+DECISIÓN: Toolbar como contenedor
+RAZÓN:
+- Layout: estructura estándar de Material-UI
+- Responsive: comportamiento predefinido
+- Accesibilidad: roles semánticos correctos
+- Estilización: estilos consistentes
+
+DECISIÓN: Typography con flexGrow
+RAZÓN:
+- Layout: ocupa espacio disponible
+- Responsive: se adapta al contenido
+- Material-UI: patrón estándar
+- UX: título siempre visible
+
+DECISIÓN: Box para navegación
+RAZÓN:
+- Flexbox: layout horizontal
+- Gap: espaciado consistente
+- Responsive: se adapta al contenido
+- Material-UI: componente optimizado
+
+DECISIÓN: Button con component={Link}
+RAZÓN:
+- React Router: navegación declarativa
+- Accesibilidad: elementos clickeables apropiados
+- SEO: enlaces reales para crawlers
+- UX: comportamiento de enlace nativo
+
+DECISIÓN: color="inherit"
+RAZÓN:
+- Consistencia: usa colores del tema
+- Accesibilidad: contraste adecuado
+- Material-UI: patrón estándar
+- Mantenibilidad: cambios automáticos
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: components/Footer.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: Box con flexDirection: 'column'
+RAZÓN:
+- Layout: estructura vertical
+- Responsive: se adapta al contenido
+- Material-UI: componente optimizado
+- Consistencia: mismo patrón que otros componentes
+
+DECISIÓN: Typography con variant="body2"
+RAZÓN:
+- Jerarquía: tamaño apropiado para footer
+- Consistencia: usa el sistema de tipografías
+- Accesibilidad: tamaño legible
+- Material-UI: patrón estándar
+
+DECISIÓN: gutterBottom
+RAZÓN:
+- Espaciado: separación visual clara
+- UX: mejor legibilidad
+- Material-UI: prop estándar
+- Consistencia: espaciado uniforme
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: components/Banner.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: useState para backgroundColor
+RAZÓN:
+- Estado local: solo este componente lo necesita
+- Reactivo: cambios se reflejan automáticamente
+- Performance: re-render solo cuando cambia
+- Simplicidad: no necesita contexto global
+
+DECISIÓN: useEffect con setInterval
+RAZÓN:
+- Side effect: manipulación del DOM/timer
+- Cleanup: evita memory leaks
+- Lifecycle: se ejecuta en montaje/desmontaje
+- Performance: timer se limpia correctamente
+
+DECISIÓN: generateRandomColor como función separada
+RAZÓN:
+- Pure function: no tiene side effects
+- Testeable: fácil de testear independientemente
+- Reutilizable: puede usarse en otros lugares
+- Legibilidad: lógica clara y separada
+
+DECISIÓN: Math.floor(Math.random() * 16777215)
+RAZÓN:
+- Rango completo: todos los colores hexadecimales
+- Performance: operación matemática simple
+- Distribución: colores uniformemente distribuidos
+- Estándar: fórmula común para colores aleatorios
+
+DECISIÓN: Box en lugar de div
+RAZÓN:
+- Material-UI: consistencia con el sistema
+- sx prop: API unificada para estilos
+- Performance: optimizado por la librería
+- TypeScript: mejor tipado
+
+DECISIÓN: Typography en lugar de h2
+RAZÓN:
+- Consistencia: usa el sistema de tipografías
+- Responsive: se adapta automáticamente
+- Accesibilidad: roles semánticos correctos
+- Material-UI: componente optimizado
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: components/Page404NotFound.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: Container con maxWidth="md"
+RAZÓN:
+- Responsive: ancho apropiado para contenido
+- UX: no demasiado ancho en pantallas grandes
+- Legibilidad: contenido centrado y legible
+- Material-UI: breakpoint estándar
+
+DECISIÓN: py: 8 para padding vertical
+RAZÓN:
+- Espaciado: suficiente separación visual
+- Responsive: se adapta al tema
+- UX: no se siente apretado
+- Material-UI: valor estándar
+
+DECISIÓN: Typography con variant="h1"
+RAZÓN:
+- Jerarquía: tamaño apropiado para título principal
+- Accesibilidad: estructura semántica correcta
+- Material-UI: sistema de tipografías
+- SEO: heading principal para la página
+
+DECISIÓN: color="primary"
+RAZÓN:
+- Branding: usa color del tema
+- Accesibilidad: contraste adecuado
+- Consistencia: mismo color en toda la app
+- UX: destaca el error
+
+DECISIÓN: Button con component={Link}
+RAZÓN:
+- React Router: navegación declarativa
+- Accesibilidad: elemento clickeable apropiado
+- SEO: enlace real para crawlers
+- UX: comportamiento de enlace nativo
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: components/Skills.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: useState para múltiples estados
+RAZÓN:
+- Estado local: cada estado tiene su propósito
+- Reactivo: cambios se reflejan automáticamente
+- Performance: re-render solo cuando cambia
+- Simplicidad: fácil de entender y mantener
+
+DECISIÓN: Estado de loading (isLoading)
+RAZÓN:
+- UX: feedback visual durante operaciones
+- Estado de la UI: controla qué mostrar
+- Performance: evita renders innecesarios
+- Accesibilidad: indica actividad
+
+DECISIÓN: Estado de error (error)
+RAZÓN:
+- UX: feedback claro de errores
+- Estado de la UI: controla qué mostrar
+- Debugging: facilita identificación de problemas
+- Accesibilidad: mensaje claro para usuarios
+
+DECISIÓN: Estado de edición (editingSkill)
+RAZÓN:
+- Modo de edición: controla si está editando
+- UX: formulario se comporta diferente
+- Estado de la UI: controla qué mostrar
+- Simplicidad: un solo estado para controlar modo
+
+DECISIÓN: Estado de formulario (formData)
+RAZÓN:
+- Controlled components: React controla el input
+- Validación: fácil validar antes de enviar
+- UX: datos persisten durante la edición
+- Performance: evita re-renders innecesarios
+
+DECISIÓN: useEffect para cargar datos
+RAZÓN:
+- Side effect: operación asíncrona
+- Lifecycle: se ejecuta en montaje
+- Dependencies: array vacío para ejecutar una vez
+- Performance: evita cargas innecesarias
+
+DECISIÓN: Función loadSkills separada
+RAZÓN:
+- Reutilización: se puede llamar desde múltiples lugares
+- Legibilidad: lógica clara y separada
+- Testing: fácil de testear independientemente
+- Mantenibilidad: cambios centralizados
+
+DECISIÓN: try-catch en loadSkills
+RAZÓN:
+- Error handling: captura errores de red/API
+- UX: muestra mensaje de error al usuario
+- Debugging: facilita identificación de problemas
+- Robustez: aplicación no se rompe
+
+DECISIÓN: setError(null) en éxito
+RAZÓN:
+- UX: limpia errores anteriores
+- Estado de la UI: controla qué mostrar
+- Consistencia: estado limpio después de éxito
+- Simplicidad: un solo lugar para limpiar errores
+
+DECISIÓN: Función isNameUnique
+RAZÓN:
+- Validación: evita duplicados
+- UX: feedback inmediato
+- Performance: validación client-side
+- Simplicidad: lógica clara y reutilizable
+
+DECISIÓN: toLowerCase() para comparación
+RAZÓN:
+- Case insensitive: no distingue mayúsculas/minúsculas
+- UX: más flexible para el usuario
+- Consistencia: comportamiento predecible
+- Estándar: práctica común
+
+DECISIÓN: Función createSkill separada
+RAZÓN:
+- Single responsibility: una función, una responsabilidad
+- Reutilización: se puede llamar desde múltiples lugares
+- Testing: fácil de testear independientemente
+- Legibilidad: lógica clara y separada
+
+DECISIÓN: Validación antes de crear
+RAZÓN:
+- UX: feedback inmediato
+- Performance: evita requests innecesarios
+- Consistencia: validación uniforme
+- Robustez: previene errores del servidor
+
+DECISIÓN: loadSkills() después de crear
+RAZÓN:
+- UX: lista se actualiza automáticamente
+- Consistencia: datos siempre actualizados
+- Simplicidad: un solo lugar para actualizar
+- Performance: evita refetch manual
+
+DECISIÓN: setFormData() para limpiar formulario
+RAZÓN:
+- UX: formulario se limpia después de crear
+- Estado de la UI: controla qué mostrar
+- Consistencia: comportamiento predecible
+- Simplicidad: un solo lugar para limpiar
+
+DECISIÓN: Función updateSkill separada
+RAZÓN:
+- Single responsibility: una función, una responsabilidad
+- Reutilización: se puede llamar desde múltiples lugares
+- Testing: fácil de testear independientemente
+- Legibilidad: lógica clara y separada
+
+DECISIÓN: Validación con excludeId
+RAZÓN:
+- UX: permite editar sin cambiar el nombre
+- Lógica: excluye el elemento actual de la validación
+- Performance: validación client-side
+- Simplicidad: lógica clara
+
+DECISIÓN: setEditingSkill(null) después de actualizar
+RAZÓN:
+- UX: sale del modo edición
+- Estado de la UI: controla qué mostrar
+- Consistencia: comportamiento predecible
+- Simplicidad: un solo lugar para limpiar
+
+DECISIÓN: Función startEditing
+RAZÓN:
+- UX: inicia modo edición
+- Estado de la UI: controla qué mostrar
+- Datos: llena formulario con datos existentes
+- Simplicidad: lógica clara y reutilizable
+
+DECISIÓN: setFormData con datos del skill
+RAZÓN:
+- UX: formulario se llena con datos existentes
+- Estado de la UI: controla qué mostrar
+- Consistencia: comportamiento predecible
+- Simplicidad: un solo lugar para llenar
+
+DECISIÓN: Función cancelEditing
+RAZÓN:
+- UX: cancela modo edición
+- Estado de la UI: controla qué mostrar
+- Datos: limpia formulario
+- Simplicidad: lógica clara y reutilizable
+
+DECISIÓN: Función deleteSkill separada
+RAZÓN:
+- Single responsibility: una función, una responsabilidad
+- Reutilización: se puede llamar desde múltiples lugares
+- Testing: fácil de testear independientemente
+- Legibilidad: lógica clara y separada
+
+DECISIÓN: loadSkills() después de eliminar
+RAZÓN:
+- UX: lista se actualiza automáticamente
+- Consistencia: datos siempre actualizados
+- Simplicidad: un solo lugar para actualizar
+- Performance: evita refetch manual
+
+DECISIÓN: Función handleSubmit
+RAZÓN:
+- Event handling: maneja el submit del formulario
+- Lógica: decide si crear o actualizar
+- UX: comportamiento unificado
+- Simplicidad: un solo lugar para manejar submit
+
+DECISIÓN: preventDefault()
+RAZÓN:
+- UX: evita recarga de página
+- SPA: mantiene comportamiento de aplicación
+- Control: maneja el submit manualmente
+- Estándar: práctica común en React
+
+DECISIÓN: Función handleInputChange
+RAZÓN:
+- Controlled components: React controla el input
+- Estado: actualiza formData automáticamente
+- UX: cambios se reflejan inmediatamente
+- Simplicidad: lógica clara y reutilizable
+
+DECISIÓN: setFormData con spread operator
+RAZÓN:
+- Inmutabilidad: no muta el estado anterior
+- Performance: React detecta cambios
+- Consistencia: patrón estándar de React
+- Simplicidad: sintaxis clara
+
+DECISIÓN: Material-UI components
+RAZÓN:
+- Consistencia: mismo sistema de diseño
+- Accesibilidad: componentes optimizados
+- Responsive: se adapta automáticamente
+- Performance: optimizado por la librería
+
+DECISIÓN: Grid system
+RAZÓN:
+- Responsive: se adapta a diferentes pantallas
+- Layout: estructura clara y flexible
+- Material-UI: sistema estándar
+- UX: mejor experiencia en móviles
+
+DECISIÓN: TextField con required
+RAZÓN:
+- Validación: HTML5 validation
+- UX: feedback visual inmediato
+- Accesibilidad: indica campos obligatorios
+- Consistencia: comportamiento uniforme
+
+DECISIÓN: Button con variant="contained"
+RAZÓN:
+- Jerarquía: botón principal destacado
+- UX: acción principal clara
+- Material-UI: patrón estándar
+- Accesibilidad: contraste adecuado
+
+DECISIÓN: Button con variant="outlined"
+RAZÓN:
+- Jerarquía: botón secundario
+- UX: acción secundaria clara
+- Material-UI: patrón estándar
+- Consistencia: comportamiento uniforme
+
+DECISIÓN: CircularProgress para loading
+RAZÓN:
+- UX: feedback visual durante carga
+- Accesibilidad: indica actividad
+- Material-UI: componente optimizado
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: Alert para errores
+RAZÓN:
+- UX: mensaje de error claro
+- Accesibilidad: anunciado por screen readers
+- Material-UI: componente optimizado
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: List para mostrar skills
+RAZÓN:
+- Semántica: lista de elementos
+- Accesibilidad: roles ARIA correctos
+- Material-UI: componente optimizado
+- UX: estructura clara
+
+DECISIÓN: ListItem con component={Card}
+RAZÓN:
+- Visual: cada skill como tarjeta
+- UX: separación visual clara
+- Material-UI: componente optimizado
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: ListItemSecondaryAction para botones
+RAZÓN:
+- Layout: botones alineados a la derecha
+- UX: acciones claramente visibles
+- Material-UI: patrón estándar
+- Accesibilidad: estructura semántica correcta
+
+DECISIÓN: IconButton para acciones
+RAZÓN:
+- UX: iconos más claros que texto
+- Accesibilidad: aria-label descriptivo
+- Material-UI: componente optimizado
+- Consistencia: mismo patrón en toda la app
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: components/Projects.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: Misma estructura que Skills.jsx
+RAZÓN:
+- Consistencia: patrón uniforme
+- Mantenibilidad: fácil de entender
+- Escalabilidad: fácil agregar más componentes
+- DRY: evita duplicación de lógica
+
+DECISIÓN: Estado específico para projects
+RAZÓN:
+- Separación: cada entidad tiene su estado
+- Performance: re-render solo cuando cambia
+- Simplicidad: fácil de entender
+- Escalabilidad: fácil agregar más entidades
+
+DECISIÓN: formData con technologies como string
+RAZÓN:
+- UX: input de texto es más fácil de usar
+- Validación: fácil validar antes de enviar
+- Conversión: se convierte a array antes de enviar
+- Simplicidad: lógica clara
+
+DECISIÓN: Conversión de technologies a array
+RAZÓN:
+- Backend: espera array de strings
+- UX: input de texto es más fácil
+- Validación: fácil validar antes de enviar
+- Performance: conversión solo cuando es necesario
+
+DECISIÓN: split(',').map(tech => tech.trim()).filter(tech => tech)
+RAZÓN:
+- Separación: divide por comas
+- Limpieza: elimina espacios en blanco
+- Filtrado: elimina strings vacíos
+- Robustez: maneja casos edge
+
+DECISIÓN: TextField con select para status
+RAZÓN:
+- UX: dropdown es más fácil de usar
+- Validación: solo valores permitidos
+- Consistencia: mismo patrón que otros campos
+- Accesibilidad: elemento select apropiado
+
+DECISIÓN: SelectProps con native: true
+RAZÓN:
+- Performance: select nativo del navegador
+- Accesibilidad: mejor soporte para screen readers
+- UX: comportamiento nativo familiar
+- Simplicidad: no necesita componentes complejos
+
+DECISIÓN: options con valores específicos
+RAZÓN:
+- Validación: solo valores permitidos
+- Backend: coincide con enum del modelo
+- UX: opciones claras y descriptivas
+- Consistencia: mismo patrón en toda la app
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: components/Gallery.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: useState para isFirstArray
+RAZÓN:
+- Estado local: solo este componente lo necesita
+- Reactivo: cambios se reflejan automáticamente
+- Performance: re-render solo cuando cambia
+- Simplicidad: fácil de entender
+
+DECISIÓN: Arrays separados para imágenes
+RAZÓN:
+- Organización: lógica clara y separada
+- Performance: no se recrean en cada render
+- Mantenibilidad: fácil agregar/quitar imágenes
+- Simplicidad: estructura clara
+
+DECISIÓN: currentArray basado en estado
+RAZÓN:
+- Reactivo: cambia automáticamente
+- Performance: no se recalcula innecesariamente
+- Simplicidad: lógica clara
+- UX: comportamiento predecible
+
+DECISIÓN: Grid system para layout
+RAZÓN:
+- Responsive: se adapta a diferentes pantallas
+- Layout: estructura clara y flexible
+- Material-UI: sistema estándar
+- UX: mejor experiencia en móviles
+
+DECISIÓN: xs={12} sm={6} md={4}
+RAZÓN:
+- Responsive: 1 columna en móvil, 2 en tablet, 3 en desktop
+- UX: mejor experiencia en cada dispositivo
+- Material-UI: breakpoints estándar
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: justifyContent="center"
+RAZÓN:
+- UX: imágenes centradas
+- Visual: mejor presentación
+- Responsive: se adapta al contenido
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: display="flex" justifyContent="center"
+RAZÓN:
+- Layout: centra cada imagen individualmente
+- UX: mejor presentación visual
+- Responsive: se adapta al contenido
+- Material-UI: patrón estándar
+
+DECISIÓN: Card con maxWidth: 300
+RAZÓN:
+- Visual: tamaño consistente
+- UX: no demasiado grande ni pequeño
+- Responsive: se adapta al contenido
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: CardMedia con objectFit: 'cover'
+RAZÓN:
+- Visual: imágenes se ajustan correctamente
+- UX: no se distorsionan
+- Responsive: se adapta al contenedor
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: onClick en Card
+RAZÓN:
+- UX: toda la tarjeta es clickeable
+- Accesibilidad: área de click más grande
+- Simplicidad: lógica clara
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: transition y hover effects
+RAZÓN:
+- UX: feedback visual al hover
+- Visual: mejor presentación
+- Accesibilidad: indica interactividad
+- Consistencia: mismo patrón en toda la app
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: components/Contact.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: Formulario sin funcionalidad
+RAZÓN:
+- TP: requisito del trabajo práctico
+- Simplicidad: no necesita lógica compleja
+- UX: formulario visual para demostración
+- Consistencia: mismo patrón que otros componentes
+
+DECISIÓN: TextField con variant="outlined"
+RAZÓN:
+- Visual: estilo consistente
+- UX: campos claramente visibles
+- Material-UI: patrón estándar
+- Accesibilidad: mejor contraste
+
+DECISIÓN: multiline y rows para mensaje
+RAZÓN:
+- UX: área de texto apropiada para mensajes largos
+- Visual: mejor presentación
+- Accesibilidad: elemento textarea apropiado
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: type="email" para email
+RAZÓN:
+- Validación: HTML5 validation
+- UX: teclado apropiado en móviles
+- Accesibilidad: indica tipo de input
+- Consistencia: comportamiento estándar
+
+DECISIÓN: Button con fullWidth
+RAZÓN:
+- UX: botón fácil de clickear
+- Visual: mejor presentación
+- Accesibilidad: área de click más grande
+- Consistencia: mismo patrón en toda la app
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: components/Convert.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: useState para pesos y dólares
+RAZÓN:
+- Estado local: solo este componente lo necesita
+- Reactivo: cambios se reflejan automáticamente
+- Performance: re-render solo cuando cambia
+- Simplicidad: fácil de entender
+
+DECISIÓN: handleConvert como función separada
+RAZÓN:
+- Event handling: maneja el cambio del input
+- Lógica: calcula la conversión
+- UX: conversión en tiempo real
+- Simplicidad: lógica clara y separada
+
+DECISIÓN: parseFloat(e.target.value) || 0
+RAZÓN:
+- Validación: convierte a número o usa 0
+- Robustez: maneja valores inválidos
+- UX: no se rompe con input vacío
+- Simplicidad: lógica clara
+
+DECISIÓN: División por 1423
+RAZÓN:
+- Conversión: tasa de cambio fija
+- Simplicidad: no necesita API externa
+- Performance: cálculo instantáneo
+- TP: requisito del trabajo práctico
+
+DECISIÓN: toFixed(2) para decimales
+RAZÓN:
+- UX: formato de moneda estándar
+- Visual: presentación consistente
+- Precisión: 2 decimales es suficiente
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: Card con maxWidth: 500
+RAZÓN:
+- Visual: tamaño apropiado para formulario
+- UX: no demasiado ancho
+- Responsive: se adapta al contenido
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: mx: 'auto' para centrar
+RAZÓN:
+- Layout: centra la tarjeta
+- UX: mejor presentación
+- Responsive: se adapta al contenido
+- Material-UI: patrón estándar
+
+DECISIÓN: Grid con justifyContent="center"
+RAZÓN:
+- Layout: centra el input
+- UX: mejor presentación
+- Responsive: se adapta al contenido
+- Material-UI: patrón estándar
+
+DECISIÓN: xs={12} sm={8}
+RAZÓN:
+- Responsive: ancho completo en móvil, 8/12 en tablet+
+- UX: mejor experiencia en cada dispositivo
+- Material-UI: breakpoints estándar
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: Divider para separar secciones
+RAZÓN:
+- Visual: separación clara entre input y resultado
+- UX: mejor organización visual
+- Material-UI: componente optimizado
+- Consistencia: mismo patrón en toda la app
+
+DECISIÓN: textAlign="center" para resultado
+RAZÓN:
+- Visual: resultado centrado
+- UX: mejor presentación
+- Responsive: se adapta al contenido
+- Consistencia: mismo patrón en toda la app
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: pages/Home.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: Importar todos los componentes
+RAZÓN:
+- Organización: todos los componentes en un lugar
+- Mantenibilidad: fácil agregar/quitar componentes
+- Simplicidad: estructura clara
+- Escalabilidad: fácil agregar más componentes
+
+DECISIÓN: Box en lugar de div
+RAZÓN:
+- Material-UI: consistencia con el sistema
+- sx prop: API unificada para estilos
+- Performance: optimizado por la librería
+- TypeScript: mejor tipado
+
+DECISIÓN: Box anidado con mb: 4
+RAZÓN:
+- Layout: separación entre contenido y banner
+- Responsive: espaciado que se adapta al tema
+- UX: mejor presentación visual
+- Material-UI: patrón estándar
+
+DECISIÓN: Banner al final
+RAZÓN:
+- UX: banner siempre visible al final
+- Layout: separación clara del contenido
+- Visual: mejor presentación
+- Consistencia: mismo patrón en toda la app
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: pages/SkillsPage.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: Página separada para Skills
+RAZÓN:
+- Routing: ruta específica para skills
+- Organización: separación clara de responsabilidades
+- UX: navegación independiente
+- Escalabilidad: fácil agregar más páginas
+
+DECISIÓN: Box en lugar de div
+RAZÓN:
+- Material-UI: consistencia con el sistema
+- sx prop: API unificada para estilos
+- Performance: optimizado por la librería
+- TypeScript: mejor tipado
+
+DECISIÓN: Importar Skills component
+RAZÓN:
+- Separación: página solo maneja routing
+- Reutilización: Skills puede usarse en otros lugares
+- Mantenibilidad: cambios en Skills no afectan la página
+- Simplicidad: estructura clara
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: pages/ProjectsPage.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: Misma estructura que SkillsPage
+RAZÓN:
+- Consistencia: patrón uniforme
+- Mantenibilidad: fácil de entender
+- Escalabilidad: fácil agregar más páginas
+- DRY: evita duplicación de lógica
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: pages/ConvertPage.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: Misma estructura que otras páginas
+RAZÓN:
+- Consistencia: patrón uniforme
+- Mantenibilidad: fácil de entender
+- Escalabilidad: fácil agregar más páginas
+- DRY: evita duplicación de lógica
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: pages/ContactPage.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: Misma estructura que otras páginas
+RAZÓN:
+- Consistencia: patrón uniforme
+- Mantenibilidad: fácil de entender
+- Escalabilidad: fácil agregar más páginas
+- DRY: evita duplicación de lógica
+
+--------------------------------------------------------------------------------
+                            ARCHIVO: pages/GalleryPage.jsx
+--------------------------------------------------------------------------------
+
+DECISIÓN: Misma estructura que otras páginas
+RAZÓN:
+- Consistencia: patrón uniforme
+- Mantenibilidad: fácil de entender
+- Escalabilidad: fácil agregar más páginas
+- DRY: evita duplicación de lógica
+
+================================================================================
+                        4. DECISIONES DE ARQUITECTURA
+================================================================================
+
+DECISIÓN: Separación en capas (components, pages, services)
+RAZÓN:
+- Single Responsibility: cada capa tiene una responsabilidad específica
+- Maintainability: cambios en una capa no afectan otras
+- Testability: cada capa puede ser testeada independientemente
+- Scalability: fácil agregar nuevas funcionalidades
+- Reusability: componentes pueden ser reutilizados
+- Team Collaboration: diferentes desarrolladores pueden trabajar en diferentes capas
+
+DECISIÓN: Componentes funcionales con hooks
+RAZÓN:
+- Modern React: patrón recomendado desde React 16.8
+- Performance: mejor optimización que class components
+- Hooks: API más simple y consistente
+- Future-proof: preparado para futuras versiones de React
+- Testing: más fácil de testear
+- Bundle size: menor tamaño del bundle
+
+DECISIÓN: useState para estado local
+RAZÓN:
+- Simplicity: API simple y fácil de entender
+- Performance: re-render solo cuando cambia
+- Reactivity: cambios se reflejan automáticamente
+- Local state: solo el componente que lo necesita
+- No over-engineering: no necesita context para estado simple
+
+DECISIÓN: useEffect para side effects
+RAZÓN:
+- Lifecycle: reemplaza componentDidMount, componentDidUpdate, componentWillUnmount
+- Side effects: operaciones asíncronas, timers, subscriptions
+- Cleanup: evita memory leaks
+- Dependencies: controla cuándo se ejecuta
+- Modern React: patrón recomendado
+
+DECISIÓN: Servicios separados para API calls
+RAZÓN:
+- Separation of concerns: lógica de API separada de UI
+- Reusability: puede ser usado por múltiples componentes
+- Testability: fácil de mockear en tests
+- Maintainability: cambios en API se centralizan
+- Error handling: manejo de errores centralizado
+- Configuration: configuración centralizada
+
+DECISIÓN: Axios para HTTP requests
+RAZÓN:
+- Promise-based: API moderna y fácil de usar
+- Interceptors: fácil agregar lógica global
+- Request/Response transformation: fácil manipular datos
+- Error handling: manejo de errores robusto
+- Browser support: amplio soporte de navegadores
+- Popular: librería establecida y mantenida
+
+DECISIÓN: Material-UI para componentes
+RAZÓN:
+- Design system: sistema completo y consistente
+- Accessibility: componentes optimizados para accesibilidad
+- Responsive: se adapta automáticamente
+- Performance: optimizado por la librería
+- TypeScript: excelente soporte de tipos
+- Popular: librería establecida y mantenida
+- Customization: fácil personalizar
+
+DECISIÓN: React Router para navegación
+RAZÓN:
+- Client-side routing: navegación sin recarga de página
+- Declarative: rutas declarativas y fáciles de entender
+- Nested routes: soporte para rutas anidadas
+- History API: usa la API nativa del navegador
+- SEO: mejor para aplicaciones SPA
+- Popular: librería establecida y mantenida
+
+================================================================================
+                        5. PATRONES DE DISEÑO IMPLEMENTADOS
+================================================================================
+
+PATRÓN: Container/Presentational Components
+IMPLEMENTACIÓN: 
+- Container: Skills.jsx, Projects.jsx (manejan estado y lógica)
+- Presentational: Gallery.jsx, Contact.jsx, Convert.jsx (solo UI)
+RAZÓN:
+- Separation of concerns: lógica separada de presentación
+- Reusability: componentes presentacionales son más reutilizables
+- Testability: más fácil de testear
+- Maintainability: cambios en lógica no afectan presentación
+
+PATRÓN: Custom Hooks (implícito)
+IMPLEMENTACIÓN: Funciones como loadSkills, createSkill, etc.
+RAZÓN:
+- Reusability: lógica puede ser reutilizada
+- Separation of concerns: lógica separada de UI
+- Testability: fácil de testear independientemente
+- Readability: código más legible
+
+PATRÓN: Controlled Components
+IMPLEMENTACIÓN: TextField con value y onChange
+RAZÓN:
+- React control: React controla el estado del input
+- Validation: fácil validar antes de enviar
+- UX: datos persisten durante la edición
+- Consistency: comportamiento predecible
+
+PATRÓN: Lifting State Up
+IMPLEMENTACIÓN: Estado en componente padre, props a hijos
+RAZÓN:
+- Single source of truth: un solo lugar para el estado
+- Data flow: flujo de datos claro y predecible
+- Communication: componentes se comunican a través de props
+- Maintainability: fácil de entender y mantener
+
+PATRÓN: Composition over Inheritance
+IMPLEMENTACIÓN: Componentes compuestos en lugar de herencia
+RAZÓN:
+- Flexibility: más flexible que herencia
+- Reusability: componentes pueden ser combinados de diferentes maneras
+- Maintainability: más fácil de mantener
+- React philosophy: patrón recomendado por React
+
+================================================================================
+                        6. CONSIDERACIONES DE ESCALABILIDAD
+================================================================================
+
+ESCALABILIDAD HORIZONTAL:
+- Microservices: backend puede ser dividido en microservicios
+- Load balancing: múltiples instancias del backend
+- CDN: assets estáticos pueden ser servidos desde CDN
+- Database sharding: base de datos puede ser particionada
+
+ESCALABILIDAD VERTICAL:
+- State management: Redux/Zustand para estado global
+- Code splitting: lazy loading de componentes
+- Memoization: React.memo, useMemo, useCallback
+- Virtualization: para listas grandes
+
+MANTENIBILIDAD:
+- TypeScript: tipado fuerte para mejor mantenibilidad
+- Testing: unit tests, integration tests, e2e tests
+- Documentation: documentación técnica y de usuario
+- Code review: proceso de revisión de código
+- CI/CD: automatización de despliegue
+
+PERFORMANCE:
+- Bundle splitting: dividir el bundle en chunks
+- Tree shaking: eliminar código no utilizado
+- Image optimization: optimizar imágenes
+- Caching: cache de API responses
+- Service workers: para funcionalidad offline
+
+================================================================================
+                                CONCLUSIÓN
+================================================================================
+
+El frontend del proyecto implementa una arquitectura moderna, escalable y mantenible
+utilizando las mejores prácticas de React y el ecosistema JavaScript. Cada decisión
+técnica está justificada por razones de performance, mantenibilidad, escalabilidad
+y experiencia de usuario.
+
+La separación clara de responsabilidades, el uso de hooks modernos, la integración
+con Material-UI y la implementación de patrones de diseño establecidos resultan
+en una aplicación robusta y profesional que cumple con todos los requisitos del
+trabajo práctico y está preparada para futuras expansiones.
+
+================================================================================
